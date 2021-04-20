@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,35 +18,35 @@ import javax.persistence.Table;
 @Table(name = "tb_movie")
 public class Movie implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String title;
 	private String subTitle;
-	private Integer imgUrl;
+	private Integer year;
+	private String imgUrl;
 	@Column(columnDefinition = "TEXT")
 	private String synopsis;
-	
+	@ManyToOne
+	@JoinColumn(name = "genre_id")
+	private Genre genre;
+
 	@OneToMany(mappedBy = "movie")
 	private List<Review> reviews = new ArrayList<>();
-	
-	@OneToMany
-	private Genre genre;
-	
-	
 
 	public Movie() {
-		
+
 	}
 
-	public Movie(Long id, String title, String subTitle, Integer imgUrl, String synopsis) {
+	public Movie(Long id, String title, String subTitle, Integer year, String imgUrl, String synopsis) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.subTitle = subTitle;
 		this.imgUrl = imgUrl;
 		this.synopsis = synopsis;
+
 	}
 
 	public Long getId() {
@@ -71,11 +73,19 @@ public class Movie implements Serializable {
 		this.subTitle = subTitle;
 	}
 
-	public Integer getImgUrl() {
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public String getImgUrl() {
 		return imgUrl;
 	}
 
-	public void setImgUrl(Integer imgUrl) {
+	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
 
@@ -86,13 +96,9 @@ public class Movie implements Serializable {
 	public void setSynopsis(String synopsis) {
 		this.synopsis = synopsis;
 	}
-	
+
 	public List<Review> getReviews() {
 		return reviews;
-	}
-
-	public void setReviews(List<Review> reviews) {
-		this.reviews = reviews;
 	}
 
 	@Override
@@ -119,5 +125,5 @@ public class Movie implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }
