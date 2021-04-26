@@ -3,12 +3,15 @@ package com.devsuperior.movieflix.entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tb_review")
@@ -18,12 +21,15 @@ public class Review implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty(message = "Campo Obrigatorio")
 	private String text;
-	@ManyToOne
-	@JoinColumn(name = "user_id")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumns({ @JoinColumn(name = "user_id") })
 	private User user;
-	@ManyToOne
-	@JoinColumn(name = "movie_id")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumns({ @JoinColumn(name = "movie_id") })
 	private Movie movie;
 
 	public Review() {

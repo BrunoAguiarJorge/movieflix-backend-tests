@@ -8,8 +8,11 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
 
-INSERT INTO tb_review (text, user_id) values ('nice movie', 1);
-INSERT INTO tb_review (text, user_id) values ('I expected better', 1);
+INSERT INTO tb_review (text, user_id) values ('nice movie' ,1);
+INSERT INTO tb_review (text, user_id) values ('Wow Super Recomendo' ,1);
+INSERT INTO tb_review (text, user_id) values ('100% esse filme' ,2);
+INSERT INTO tb_review (text, user_id) values ('I expected better' ,1);
+
 
 INSERT INTO tb_genre (name) VALUES ('Action');
 INSERT INTO tb_genre (name) VALUES ('Suspense');

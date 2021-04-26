@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ public class Movie implements Serializable {
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
 
-	@OneToMany(mappedBy = "movie")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "movie")
 	private List<Review> reviews = new ArrayList<>();
 
 	public Movie() {
@@ -46,7 +47,6 @@ public class Movie implements Serializable {
 		this.subTitle = subTitle;
 		this.imgUrl = imgUrl;
 		this.synopsis = synopsis;
-
 	}
 
 	public Long getId() {
@@ -100,6 +100,16 @@ public class Movie implements Serializable {
 	public List<Review> getReviews() {
 		return reviews;
 	}
+	
+	
+	private Genre getGenre() {
+		return genre;
+	}
+
+	private void setGenre(Genre genre) {
+		this.genre = genre;
+	}
+
 
 	@Override
 	public int hashCode() {
