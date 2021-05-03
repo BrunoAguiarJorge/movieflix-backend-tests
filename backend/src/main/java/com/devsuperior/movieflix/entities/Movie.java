@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,15 +28,15 @@ public class Movie implements Serializable {
 	private String imgUrl;
 	@Column(columnDefinition = "TEXT")
 	private String synopsis;
+	
 	@ManyToOne
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "movie")
+	@OneToMany(mappedBy = "movie")
 	private List<Review> reviews = new ArrayList<>();
 
 	public Movie() {
-
 	}
 
 	public Movie(Long id, String title, String subTitle, Integer year, String imgUrl, String synopsis) {
@@ -97,20 +96,18 @@ public class Movie implements Serializable {
 		this.synopsis = synopsis;
 	}
 
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
+
 	public List<Review> getReviews() {
 		return reviews;
 	}
 	
-	
-	private Genre getGenre() {
-		return genre;
-	}
-
-	private void setGenre(Genre genre) {
-		this.genre = genre;
-	}
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

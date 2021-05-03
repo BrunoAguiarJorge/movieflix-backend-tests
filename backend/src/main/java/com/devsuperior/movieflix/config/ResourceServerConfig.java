@@ -30,15 +30,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	private JwtTokenStore tokenStore;
 
 	private static final String[] PUBLIC = { "/oauth/token", "/h2-console/**" };
-	/**
-	 * implementar esse mais tarde para liberar acesso aos membros
-	 */
-		private static final String[] MEMBER = { };
-
-	//private static final String[] OPERATOR_OR_ADMIN = {  };
-
-	//private static final String[] ADMIN = {  };
-
+	
+	private static final String[] MEMBER = {"/reviews/**"};
+		
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenStore(tokenStore);

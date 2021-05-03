@@ -3,9 +3,7 @@ package com.devsuperior.movieflix.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -13,10 +11,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.devsuperior.movieflix.entities.Review;
-import com.devsuperior.movieflix.entities.Role;
 import com.devsuperior.movieflix.entities.User;
 
-public class UserDTO implements UserDetails, Serializable {
+public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -24,21 +21,34 @@ public class UserDTO implements UserDetails, Serializable {
 	private String email;
 	private String password;
 
-	private List<Review> reviews = new ArrayList<>();
+	//private List<Review> reviews = new ArrayList<>();
 
-	private Set<Role> roles = new HashSet<>();
+	private List<RoleDTO> roles = new ArrayList<>();
 
 	public UserDTO() {
 	}
 
+	public UserDTO(Long id, String name, String email) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+	}
+
 	public UserDTO(User entity) {
-		super();
 		id = entity.getId();
 		name = entity.getName();
 		email = entity.getEmail();
 		password = entity.getPassword();
-		roles = entity.getRoles();
+		// roles = entity.getRoles();
+		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
+	}
 
+//	public void setReviews(List<Review> reviews) {
+//		this.reviews = reviews;
+//	}
+
+	public void setRoles(List<RoleDTO> roles) {
+		this.roles = roles;
 	}
 
 	public Long getId() {
@@ -73,46 +83,12 @@ public class UserDTO implements UserDetails, Serializable {
 		this.password = password;
 	}
 
-	public Set<Role> getRoles() {
+	public List<RoleDTO> getRoles() {
 		return roles;
 	}
 
-	public List<Review> getReviews() {
-		return reviews;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList());
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+//	public List<Review> getReviews() {
+//		return reviews;
+//	}
 
 }

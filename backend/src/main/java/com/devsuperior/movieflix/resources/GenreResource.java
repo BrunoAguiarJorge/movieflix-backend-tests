@@ -2,8 +2,6 @@ package com.devsuperior.movieflix.resources;
 
 import java.net.URI;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,43 +18,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devsuperior.movieflix.dto.MovieDTO;
-import com.devsuperior.movieflix.services.MovieService;
+import com.devsuperior.movieflix.dto.GenreDTO;
+import com.devsuperior.movieflix.services.GenreService;
 
-//use rest controller to make this class a resource 
 @RestController
-@RequestMapping(value = "/movies")
-public class MovieResource {
+@RequestMapping(value = "/genres")
+public class GenreResource {
 
 	// let resource layer access service layer.
 	@Autowired
-	private MovieService service;
+	private GenreService service;
 
 	@GetMapping
 	// create a list with all categories in it! ReuestParam -> used for pagination!
-	public ResponseEntity<Page<MovieDTO>> findAll(
-			@RequestParam(value = "genreId", defaultValue = "0") Long genreId,
+	public ResponseEntity<Page<GenreDTO>> findAll(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "title") String orderBy) {
+			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		Page<MovieDTO> list = service.findAllPaged(genreId, pageRequest);
+		Page<GenreDTO> list = service.findAllPaged(pageRequest);
 
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	// create a list with all categories in it!
-	public ResponseEntity<MovieDTO> findById(@PathVariable Long id) {
-		MovieDTO dto = service.findById(id);
+	public ResponseEntity<GenreDTO> findById(@PathVariable Long id) {
+		GenreDTO dto = service.findById(id);
 		// "ok" return http code 200
 		return ResponseEntity.ok().body(dto);
 	}
 
 	@PostMapping
-	public ResponseEntity<MovieDTO> insert(@Valid @RequestBody MovieDTO dto) {
+	public ResponseEntity<GenreDTO> insert(@RequestBody GenreDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		// created return http code 201
@@ -65,14 +60,17 @@ public class MovieResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<MovieDTO> update(@PathVariable Long id, @Valid @RequestBody MovieDTO dto) {
+	public ResponseEntity<GenreDTO> insert(@PathVariable Long id, @RequestBody GenreDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
+
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<MovieDTO> delete(@PathVariable Long id) {
+	public ResponseEntity<GenreDTO> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+
 	}
+
 }

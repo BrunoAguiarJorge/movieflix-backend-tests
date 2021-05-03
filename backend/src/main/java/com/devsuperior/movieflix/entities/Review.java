@@ -21,28 +21,22 @@ public class Review implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@NotEmpty(message = "Campo Obrigatorio")
 	private String text;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumns({ @JoinColumn(name = "user_id") })
-	private User user;
+	 @ManyToOne(fetch=FetchType.LAZY)
+	    @JoinColumns({
+	            @JoinColumn(name = "movie_id")
+	    })
+	    private Movie movie;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumns({ @JoinColumn(name = "movie_id") })
-	private Movie movie;
-
-	public Review() {
-
-	}
-
-	public Review(Long id, String text, User user) {
-		super();
-		this.id = id;
-		this.text = text;
-		this.user = user;
-	}
-
+	    @ManyToOne(fetch=FetchType.LAZY)
+	    @JoinColumns({
+	            @JoinColumn(name = "user_id")
+	    })
+	    private User user;
+	    
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +59,14 @@ public class Review implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
 	}
 
 	@Override
